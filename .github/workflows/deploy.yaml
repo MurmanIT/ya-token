@@ -37,7 +37,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.event.commit_id }}
+          tags: ghcr.io/${{ github.repository }}:latest
       # - name: Deploy
       #   run: |
       #     sudo apt-get install -y rsync ssh
