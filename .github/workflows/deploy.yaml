@@ -48,4 +48,4 @@ jobs:
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "\
           export 'CONFIG_PATH=prod' && \
           export 'HTTP_SERVER_PASSWORD=${{ secrets.HTTP_SERVER_PASSWORD }}' && \
-          export 'YANDEX_CLOUD_TOKEN=${{ secrets.YANDEX_CLOUD_TOKEN }}'
+          export 'YANDEX_CLOUD_TOKEN=${{ secrets.YANDEX_CLOUD_TOKEN }}'"
