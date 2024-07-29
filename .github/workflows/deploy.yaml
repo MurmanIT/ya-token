@@ -15,6 +15,7 @@ jobs:
     env:
       HOST: ${{ vars.HOST }}
       PORT: ${{ vars.PORT }}
+      USERNAME: ${{ vars.USERNAME }}
       DEPLOY_DIRECTORY: /mungu/apps/ya-token
       CONFIG_PATH: /mungu/apps/ya-token/config/prod.yaml
       ENV_FILE_PATH: /mungu/apps/ya-token/.env
@@ -41,6 +42,6 @@ jobs:
             host: ${{ env.HOST }}
             port: ${{ env.PORT }}
             key: ${{ secrets.DEPLOY_SSH_KEY }}
-            username: ${{ secrets.DEPLOY_USERNAME }}
+            username: ${{ env.USERNAME }}
             source: ./ya-token
             target: ${{ env.DEPLOY_DIRECTORY }}
