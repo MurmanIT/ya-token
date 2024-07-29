@@ -11,6 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
     env:
       HOST: ${{ vars.HOST }}
       PORT: ${{ vars.PORT }}
