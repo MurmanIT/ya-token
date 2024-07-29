@@ -1,0 +1,7 @@
+env: "local" #local, dev, prod
+cloud:  
+  url: https://iam.api.cloud.yandex.net/iam/v1/tokens  
+http_server:
+  port: 8086 
+  user: "token"
+  password: "token"  
