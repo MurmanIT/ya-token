@@ -57,6 +57,11 @@ jobs:
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "\
           touch ${{ env.ENV_FILE_PATH }} && \
           chmod 600 ${{ env.ENV_FILE_PATH }} && \
-          echo 'CONFIG_PATH=prod && \
+          echo 'CONFIG_PATH=prod' && \
           echo 'HTTP_SERVER_PASSWORD=${{ secrets.HTTP_SERVER_PASSWORD }}' >> ${{ env.ENV_FILE_PATH }} && \
           echo 'YANDEX_CLOUD_TOKEN=${{ secrets.YANDEX_CLOUD_TOKEN }}' >> ${{ env.ENV_FILE_PATH }}"
+      
+      - name: Copy service file
+        run: |
+          scp -i deploy_key.pem -o StrictHostKeyChecking=no -p ${{ env.PORT }} ${{ github.workspace }}/deployment/token.service ${{ env.HOST }}:/tmp/token.service
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "mv /tmp/token.service /etc/systemd/system/token.service"
