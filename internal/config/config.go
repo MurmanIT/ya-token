@@ -8,7 +8,7 @@ import (
 )
 
 type Cloud struct {
-	Token    string `yaml:"token" env-required:"true" env: "YANDEX_CLOUD_TOKEN"`
+	Token    string `yaml:"token" env-required:"true" env:"YANDEX_CLOUD_TOKEN"`
 	UrlCloud string `yaml:"url" env-required:"true" env-default:"https://iam.api.cloud.yandex.net/iam/v1/tokens"`
 }
 
@@ -21,7 +21,7 @@ type Config struct {
 type HttpServer struct {
 	Port     int    `yaml:"port" env-default:"8085"`
 	User     string `yaml:"user" env-required:"true"`
-	Password string `yaml:"password" env-required:"true" env: "HTTP_SERVER_PASSWORD"`
+	Password string `yaml:"password" env-required:"true" env:"HTTP_SERVER_PASSWORD"`
 }
 
 func LoadConfig() *Config {

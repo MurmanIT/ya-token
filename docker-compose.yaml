@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  app:
+    image: ya-token
+    build: .
+    container_name: ya-token
+    environment:
+      - CONFIG_PATH=prod
+      - YANDEX_CLOUD_TOKEN=${ YANDEX_CLOUD_TOKEN }
+      - HTTP_SERVER_PASSWORD=${ HTTP_SERVER_PASSWORD }
+    network_mode: host
