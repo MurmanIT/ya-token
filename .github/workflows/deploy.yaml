@@ -14,8 +14,7 @@ jobs:
     environment: production
     env:
       HOST: ${{ vars.HOST }}
-      PORT: ${{ vars.PORT }}
-      USERNAME: ${{ vars.USERNAME }}
+      PORT: ${{ vars.PORT }}      
       DEPLOY_DIRECTORY: /mungu/apps/ya-token
       CONFIG_PATH: /mungu/apps/ya-token/config/prod.yaml
       ENV_FILE_PATH: /mungu/apps/ya-token/.env
@@ -37,11 +36,9 @@ jobs:
       
       - name: Deploy
         run: |
-          uses: appleboy/scp-action@master
-          with:
-            host: ${{ env.HOST }}
-            port: ${{ env.PORT }}
-            key: ${{ secrets.DEPLOY_SSH_KEY }}
-            username: ${{ env.USERNAME }}
-            source: ./ya-token
-            target: ${{ env.DEPLOY_DIRECTORY }}
+          sudo apt-get install -y rsync ssh
+          echo "$DEPLOY_SSH_KEY" > deploy_key.pem
+          chmod 600 deploy_key.pem
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "mkdir -p ${{ env.DEPLOY_DIRECTORY }}"
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
