@@ -37,7 +37,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/murmnait/token:${{ github.commit_id }}
+          tags: ghcr.io/murmnait/token:latest
       # - name: Deploy
       #   run: |
       #     sudo apt-get install -y rsync ssh
