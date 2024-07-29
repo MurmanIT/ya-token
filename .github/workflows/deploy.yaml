@@ -12,16 +12,40 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      HOST: ${{ vars.YaToken.HOST }}
-      PORT: ${{ vars.YaToken.PORT }}
+      HOST: ${{ vars.HOST }}
+      PORT: ${{ vars.PORT }}
       DEPLOY_DIRECTORY: /mungu/apps/ya-token
       CONFIG_PATH: /mungu/apps/ya-token/config/prod.yaml
       ENV_FILE_PATH: /mungu/apps/ya-token/.env
-    steps:
+    steps:        
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.inputs.tag }}
 
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -39,8 +63,7 @@ jobs:
           sudo apt-get install -y ssh rsync
           echo "$DEPLOY_SSH_KEY" > deploy_key
           chmod 600 deploy_key          
-          ssh -i deploy_key -o StrictHostKeyChecking=no ${{ env.HOST}} -p ${{ env.PORT }} "mkdir -p ${{ env.DEPLOY_DIRECTORY}}"
+          ssh -i deploy_key -o StrictHostKeyChecking=no ${{ env.HOST }} -p $PORT "mkdir -p ${{ env.DEPLOY_DIRECTORY }}"
           rsync -avz -e "ssh -i deploy_key -o StrictHostKeyChecking=no -p ${{ env.PORT }}" ./ ${{ env.HOST }}:${{ env.DEPLOY_DIRECTORY }} --exclude '.git'
         env:
-          DEPLOY_SSH_KEY: ${{ secrets.YaToken.DEPLOY_SSH_KEY }}
-          GITHUB_CONTEX: ${{ toJson(github) }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
