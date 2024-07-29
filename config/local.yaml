@@ -4,4 +4,4 @@ cloud:
 http_server:
   port: 8086 
   user: "token"
-  password: "token"  
+  password: "token"
