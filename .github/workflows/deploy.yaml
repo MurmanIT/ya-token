@@ -38,9 +38,9 @@ jobs:
         run: |
           echo $GITHUB_CONTEX
           sudo apt-get install -y ssh rsync
-          echo "$DEPLOY_SSH_KEY" > deploy_key.pem
-          chmod 600 deploy_key.pem          
-          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "mkdir -p ${{ env.DEPLOY_DIRECTORY }}"
-          rsync -avz -e "ssh -i deploy_key -o StrictHostKeyChecking=no -p ${{ env.PORT }}" ./ ${{ env.HOST }}:${{ env.DEPLOY_DIRECTORY }} --exclude '.git'
+          echo "$DEPLOY_SSH_KEY"
+          echo "$DEPLOY_SSH_KEY" > deploy_key
+          chmod 600 deploy_key
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "mkdir -p ${{ env.DEPLOY_DIRECTORY }}"          
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
