@@ -12,14 +12,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      HOST: ${{ vars.HOST }}
-      PORT: ${{ vars.PORT }}
+      HOST: ${{ vars.YaToken.HOST }}
+      PORT: ${{ vars.YaToken.PORT }}
       DEPLOY_DIRECTORY: /mungu/apps/ya-token
       CONFIG_PATH: /mungu/apps/ya-token/config/prod.yaml
       ENV_FILE_PATH: /mungu/apps/ya-token/.env
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -40,5 +42,5 @@ jobs:
           ssh -i deploy_key -o StrictHostKeyChecking=no ${{ env.HOST}} -p ${{ env.PORT }} "mkdir -p ${{ env.DEPLOY_DIRECTORY}}"
           rsync -avz -e "ssh -i deploy_key -o StrictHostKeyChecking=no -p ${{ env.PORT }}" ./ ${{ env.HOST }}:${{ env.DEPLOY_DIRECTORY }} --exclude '.git'
         env:
-          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_SSH_KEY: ${{ secrets.YaToken.DEPLOY_SSH_KEY }}
           GITHUB_CONTEX: ${{ toJson(github) }}
