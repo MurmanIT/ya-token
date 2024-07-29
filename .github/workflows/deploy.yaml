@@ -46,8 +46,15 @@ jobs:
 
       - name: Remove old systemd service file
         run: |
-          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "rm -f /etc/systemd/system/ya-token.service"
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "rm -f /etc/systemd/system/ya-token.service"
+
       - name: List contents
         run: |
           echo "List contents of ${{ env.DEPLOY_DIRECTORY }}"
           ls -la ${{ github.workspace }}/deployment
+      
+      - name: Create environment
+        run: |                
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "\
+          touch ${{ env.ENV_FILE_PATH }} && \
+          chmod 600 ${{ env.ENV_FILE_PATH }}
