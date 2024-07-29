@@ -15,9 +15,8 @@ jobs:
     env:
       HOST: ${{ vars.HOST }}
       PORT: ${{ vars.PORT }}      
-      DEPLOY_DIRECTORY: /mungu/apps/ya-token
-      CONFIG_PATH: /mungu/apps/ya-token/config/prod.yaml
-      ENV_FILE_PATH: /mungu/apps/ya-token/.env
+      DEPLOY_DIRECTORY: apps/ya-token      
+      ENV_FILE_PATH: apps/ya-token/.env
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -58,6 +57,6 @@ jobs:
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "\
           touch ${{ env.ENV_FILE_PATH }} && \
           chmod 600 ${{ env.ENV_FILE_PATH }} && \
-          echo 'CONFIG_PATH=${{ env.CONFIG_PATH }}' > ${{ env.ENV_FILE_PATH }} && \
+          echo 'CONFIG_PATH=prod && \
           echo 'HTTP_SERVER_PASSWORD=${{ secrets.HTTP_SERVER_PASSWORD }}' >> ${{ env.ENV_FILE_PATH }} && \
           echo 'YANDEX_CLOUD_TOKEN=${{ secrets.YANDEX_CLOUD_TOKEN }}' >> ${{ env.ENV_FILE_PATH }}"
