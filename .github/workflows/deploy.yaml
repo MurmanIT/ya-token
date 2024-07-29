@@ -57,4 +57,7 @@ jobs:
         run: |                
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "\
           touch ${{ env.ENV_FILE_PATH }} && \
-          chmod 600 ${{ env.ENV_FILE_PATH }}
+          chmod 600 ${{ env.ENV_FILE_PATH }} && \
+          echo 'CONFIG_PATH=${{ env.CONFIG_PATH }}' > ${{ env.ENV_FILE_PATH }} && \
+          echo 'HTTP_SERVER_PASSWORD=${{ secrets.HTTP_SERVER_PASSWORD }}' >> ${{ env.ENV_FILE_PATH }} && \
+          echo 'YANDEX_CLOUD_TOKEN=${{ secrets.YANDEX_CLOUD_TOKEN }}' >> ${{ env.ENV_FILE_PATH }}"

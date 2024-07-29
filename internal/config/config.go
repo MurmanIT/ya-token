@@ -9,7 +9,7 @@ import (
 
 type Cloud struct {
 	Token    string `yaml:"token" env-required:"true" env: "YANDEX_CLOUD_TOKEN"`
-	UrlCloud string `yaml:"url" env-required:"true" enf-default:"https://iam.api.cloud.yandex.net/iam/v1/tokens"`
+	UrlCloud string `yaml:"url" env-required:"true" env-default:"https://iam.api.cloud.yandex.net/iam/v1/tokens"`
 }
 
 type Config struct {
