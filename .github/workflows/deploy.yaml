@@ -1,1 +1,31 @@
 name: Deploy
+
+on:
+  push:
+    branches: 
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HOST: ${{ vars.HOST }}
+      PORT: ${{ vars.PORT }}
+      DEPLOY_DIRECTORY: /mungu/apps/ya-token
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.21.4
+
+      - name: Build app
+        run: |
+          go mod download
+          go build -o ya-token ./cmd/ya-token      
