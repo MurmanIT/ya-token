@@ -18,12 +18,7 @@ jobs:
       DEPLOY_DIRECTORY: /mungu/apps/ya-token
       CONFIG_PATH: /mungu/apps/ya-token/config/prod.yaml
       ENV_FILE_PATH: /mungu/apps/ya-token/.env
-    steps:        
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
+    steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -43,9 +38,9 @@ jobs:
         run: |
           echo $GITHUB_CONTEX
           sudo apt-get install -y ssh rsync
-          echo "$DEPLOY_SSH_KEY" > deploy_key
-          chmod 600 deploy_key          
-          ssh -i deploy_key -o StrictHostKeyChecking=no ${{ env.HOST }} -p $PORT "mkdir -p ${{ env.DEPLOY_DIRECTORY }}"
+          echo "$DEPLOY_SSH_KEY" > deploy_key.pem
+          chmod 600 deploy_key.pem          
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "mkdir -p ${{ env.DEPLOY_DIRECTORY }}"
           rsync -avz -e "ssh -i deploy_key -o StrictHostKeyChecking=no -p ${{ env.PORT }}" ./ ${{ env.HOST }}:${{ env.DEPLOY_DIRECTORY }} --exclude '.git'
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
