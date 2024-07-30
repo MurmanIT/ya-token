@@ -121,8 +121,8 @@ jobs:
         run: |
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }}  "\
           echo $APPTOKEN | docker login ghcr.io -u $USERNAME --password-stdin
-          docker compose -f ./docker-compose.prod.yml pull && \
-          docker compose -f ./docker-compose.prod.yml up app -d"
+          docker compose -f ./${{ env.DEPLOY_DIRECTORY }}/docker-compose.prod.yml pull && \
+          docker compose -f ./${{ env.DEPLOY_DIRECTORY }}/docker-compose.prod.yml up app -d"
         env:
           APPTOKEN: ${{ secrets.REGISTRY_TOKEN }}
           USERNAME: ${{ github.actor }}
