@@ -68,6 +68,6 @@ jobs:
       #     rsync -avz -e 'ssh -i deploy_key.pem -p ${{ env.PORT }} -o StrictHostKeyChecking=no' --exclude='.git' ./ ${{ env.HOST }}:${{ env.DEPLOY_DIRECTORY }}
       #   env:
       #     DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-  deploy_ssh:
-    needs: push_to_registry
-    runs-on: ubuntu-latest
+  # deploy_ssh:
+  #   needs: push_to_registry
+  #   runs-on: ubuntu-latest
