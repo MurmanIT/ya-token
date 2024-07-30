@@ -9,35 +9,56 @@ on:
       - master
 
 jobs:
-  deploy:
+  push_to_registry:
     runs-on: ubuntu-latest
     environment: production
     env:
       HOST: ${{ vars.HOST }}
       PORT: ${{ vars.PORT }}
+    if: ${{ github.event.workflow_run.conclusion != 'failure' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: ${{github.event.commit_id}}
       
+      - name: Checkout tag
+        uses: actions/checkout@v3
+        with:
+          ref: refs/tags/${{ github.event.inputs.version }}
+      
+      - name: Env variable assignment
+        run: echo "image_repository_name=$(echo ${{ github.repository_owner }}/${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Assign version
+        run: |
+          echo "TAG_NAME=latest" >> $GITHUB_ENV
+          if [ "${{ github.event.release.tag_name }}" != "" ]; then
+            echo "TAG_NAME=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          fi;
+          if [ "${{ github.event.inputs.version }}" != "" ]; then
+            echo "TAG_NAME=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+          fi;
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       
-      - name: Login to Github Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.REGISTRY_TOKEN }}
       
-      - name: Build and push
+      - name: Build and push Docker image
         uses: docker/build-push-action@v3
+        if: ${{ github.event.inputs.version == '' || github.event.inputs.version == 'latest' }}
         with:
           context: .
-          file: ./Dockerfile
+          file: Dockerfile
           push: true
-          tags: ghcr.io/murmnait/token:latest
+          tags: ghcr.io/${{ env.image_repository_name }}:${{ env.TAG_NAME }}
+
       # - name: Deploy
       #   run: |
       #     sudo apt-get install -y rsync ssh
@@ -46,4 +67,7 @@ jobs:
       #     ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} -p ${{ env.PORT }} "mkdir -p ${{ env.DEPLOY_DIRECTORY }}"
       #     rsync -avz -e 'ssh -i deploy_key.pem -p ${{ env.PORT }} -o StrictHostKeyChecking=no' --exclude='.git' ./ ${{ env.HOST }}:${{ env.DEPLOY_DIRECTORY }}
       #   env:
-      #     DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}    
+      #     DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+  deploy_ssh:
+    needs: push_to_registry
+    runs-on: ubuntu-latest
