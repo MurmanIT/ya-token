@@ -30,16 +30,6 @@ jobs:
       - name: Env variable assignment
         run: echo "image_repository_name=$(echo ${{ github.repository_owner }}/${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
-      - name: Assign version
-        run: |
-          echo "TAG_NAME=latest" >> $GITHUB_ENV
-          if [ "${{ github.event.release.tag_name }}" != "" ]; then
-            echo "TAG_NAME=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
-          fi;
-          if [ "${{ github.event.inputs.version }}" != "" ]; then
-            echo "TAG_NAME=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-          fi;
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       
