@@ -4,3 +4,6 @@ cloud:
 http_server:
   port: 8086 
   user: "token"
+service_accout:
+  id: "aje00fe5chjthtbspo95"  
+  service_account_id: "ajen7krc1ei4ukeq4t1r"

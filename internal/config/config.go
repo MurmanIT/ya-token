@@ -12,10 +12,17 @@ type Cloud struct {
 	UrlCloud string `yaml:"url" env-required:"true" env-default:"https://iam.api.cloud.yandex.net/iam/v1/tokens"`
 }
 
+type ServiceAccount struct {
+	Id               string `yaml:"id" env-required:"true"`
+	ServiceAccountId string `yaml:"service_account_id" env-required:"true"`
+	PrivateKey       string `yaml:"private_key" env-required:"true" env: "PRIVATE_KEY"`
+}
+
 type Config struct {
-	Env        string `yaml:"env" env-default:"dev" env-required:"true"`
-	Cloud      `yaml:"cloud"`
-	HttpServer `yaml:"http_server"`
+	Env            string `yaml:"env" env-default:"dev" env-required:"true"`
+	Cloud          `yaml:"cloud"`
+	HttpServer     `yaml:"http_server"`
+	ServiceAccount `yaml:"service_account"`
 }
 
 type HttpServer struct {
