@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"token/internal/config"
 	"token/internal/transport/rest/routers/iamok"
+	servicetoken "token/internal/transport/rest/routers/service_token"
 	"token/internal/transport/rest/routers/token"
 	server_http "token/pkg/http"
 
@@ -39,6 +40,7 @@ func (s *ServerRest) token() {
 			},
 		))
 		r.Post("/", token.YaToken(s.logger, &s.cfg.Cloud))
+		r.Post("/service", servicetoken.ServiceToken(s.logger, s.cfg))
 	})
 }
 

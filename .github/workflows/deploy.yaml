@@ -115,7 +115,9 @@ jobs:
           echo 'IMAGE_REPO=${{ env.image_repository_name }}' >> ${{ env.ENV_FILE_PATH }} && \
           echo 'RELEASE_VERSION=${{ env.TAG_NAME }}' >> ${{ env.ENV_FILE_PATH }} && \
           echo 'YANDEX_CLOUD_TOKEN=${{ secrets.YANDEX_CLOUD_TOKEN }}' >> ${{ env.ENV_FILE_PATH }} && \
+          echo 'SERVICE_ACCOUNT_PRIVATE_KEY=${{ secrets.SERVICE_ACCOUNT_PRIVATE_KEY }}' >> ${{ env.ENV_FILE_PATH }} && \
           echo 'HTTP_SERVER_PASSWORD=${{ secrets.HTTP_SERVER_PASSWORD }}' >> ${{ env.ENV_FILE_PATH }}"
+
 
       - name: remote docker-compose up via ssh
         if: ${{ github.event.inputs.version == '' || github.event.inputs.version == 'latest' }}

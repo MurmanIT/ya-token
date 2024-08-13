@@ -15,7 +15,7 @@ type Cloud struct {
 type ServiceAccount struct {
 	Id               string `yaml:"id" env-required:"true"`
 	ServiceAccountId string `yaml:"service_account_id" env-required:"true"`
-	PrivateKey       string `yaml:"private_key" env-required:"true" env: "PRIVATE_KEY"`
+	PrivateKey       string `yaml:"private_key" env-required:"true" env: "SERVICE_ACCOUNT_PRIVATE_KEY"`
 }
 
 type Config struct {

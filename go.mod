@@ -11,6 +11,7 @@ require (
 	github.com/davesavic/clink v1.0.2 // indirect
 	github.com/go-chi/chi/v5 v5.1.0 // indirect
 	github.com/go-chi/render v1.0.3 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/ilyakaznacheev/cleanenv v1.5.0 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
